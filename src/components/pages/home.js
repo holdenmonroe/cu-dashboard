@@ -13,8 +13,6 @@ class Home extends Component {
             <div className="container-fluid">
                 <h3>Server List</h3>
                 <ServerList className="serverList" />
-                <h3>Message of the Day</h3>
-                <MOTD className="motd" />
             </div>
         );
     }
