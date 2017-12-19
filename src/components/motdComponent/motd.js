@@ -5,8 +5,29 @@ import React, { Component } from 'react';
 import { withGraphQL } from 'camelot-unchained/lib/graphql/react';
 
 import '../../assets/css/styles.css';
-//<p dangerouslySetInnerHTML={{__html: this.props.channelMOTD_ID}} />
+
 class MOTD extends Component {
+
+    componentWillReceiveProps (newProps) {
+        if (newProps.channelID !== this.props.channelID) {
+            this.props.graphql.refetch();
+        }
+    }
+
+    renderMOTD() {
+        return this.props.graphql.data.motd && this.props.graphql.data.motd.map(({ id, title, htmlContent, utcCreated, utcDisplayStart, utcDisplayEnd }) => {
+            
+            return (
+                <div className='well' key={id}>
+                    <h3>Title:</h3> 
+                    <div className='well'><h1 dangerouslySetInnerHTML={{__html: title}} /></div>
+
+                    <h3>Message:</h3> 
+                    <div className='well'><p dangerouslySetInnerHTML={{__html: htmlContent}} /></div>
+                </div>
+            );
+        });
+    }
 
     render() {
 
@@ -16,22 +37,25 @@ class MOTD extends Component {
 
         console.log(this.props);
 
-        return this.props.graphql.data.motd && this.props.graphql.data.motd.map(({ id, title, htmlContent, utcCreated, utcDisplayStart, utcDisplayEnd }) => {
-
+        if (this.props.graphql.data.motd.length !== 0) {
             return (
                 <div className='container-fluid'>
-                    {id}
-                    {title}
-                    {htmlContent}
+                    <h3>Message of the Day</h3>
+                    {this.renderMOTD()}
                 </div>
             );
-        });
+        } else {
+            return (
+                <div></div>
+            );
+        }
+        
     }
 }
 
-export default withGraphQL(
-    {
-        query: `
+export default withGraphQL(props => 
+    ({
+      query: `
         query FetchMOTDQuery($channel: Int!) {
             motd(channel: $channel) {
                 id
@@ -41,11 +65,9 @@ export default withGraphQL(
                 utcDisplayStart
                 utcDisplayEnd
             }
-        }
-    `
-    },
-    {
-        options: (props) => { return { variables: { channel: props.channelID } } }
-    }
-
+        }`,
+      variables: {
+        channel: props.channelID,
+      },
+    })
 )(MOTD);

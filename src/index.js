@@ -6,8 +6,7 @@ import App from './App';
 import '../src/env.js';
 
 useConfig({
-    url: 'https://hatcheryapi.camelotunchained.com/graphql',
-    stringifyVariables: true,
+    url: 'https://hatcheryapi.camelotunchained.com/graphql'
 })
 
 

@@ -11,6 +11,7 @@ import '../../assets/css/styles.css';
 class ServerList extends Component {
 
     renderServers() {
+
         return this.props.graphql.data.serviceStatus.servers && this.props.graphql.data.serviceStatus.servers.map(({ channelID, name, status, accessLevel }) => {
             
             var statusColor = "";
@@ -31,7 +32,7 @@ class ServerList extends Component {
         });
     }
 
-    handleViewMOTDChange(channelID, name) {
+    handleViewMOTDChange = (channelID, name) => {
         this.props.onViewMOTD(true, channelID, name);
     }
 
