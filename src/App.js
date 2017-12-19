@@ -1,3 +1,6 @@
+/**
+ * Created by Zaedred on 9/6/2017.
+ */
 import React, { Component } from 'react';
 
 //Components
@@ -8,11 +11,11 @@ import Home from './components/pages/home';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-          <Header />
-            <Home />
-          <Footer />
-      </div>
+        <div className="App">
+            <Header />
+              <Home />
+            <Footer />
+        </div>
     );
   }
 }
