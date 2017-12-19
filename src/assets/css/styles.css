@@ -11,3 +11,22 @@
 .timeDiv {
     background-color: black;
 }
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand>img {
+    padding: 7px 14px;
+}
+
+.footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+}
+
+.react-spinner {
+    margin-top: 75px;
+}

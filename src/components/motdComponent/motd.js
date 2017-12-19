@@ -6,6 +6,8 @@ import { withGraphQL } from 'camelot-unchained/lib/graphql/react';
 import Moment from 'react-moment';
 import 'moment-timezone';
 
+import { ScaleLoader } from 'react-spinners';
+
 import '../../assets/css/styles.css';
 
 class MOTD extends Component {
@@ -30,9 +32,15 @@ class MOTD extends Component {
                     </div>
                     <div className='panel-body'>
                         <div>
-                            <div className='col-md-4 text-center timeDiv'><small>Created Date: <Moment format='YYYY-MM-DD hh:mm A'>{createdDate}</Moment></small></div>
-                            <div className='col-md-4 text-center timeDiv'><small>Start Date: <Moment format='YYYY-MM-DD hh:mm A'>{startDate}</Moment></small></div>
-                            <div className='col-md-4 text-center timeDiv'><small>End Date: <Moment format='YYYY-MM-DD hh:mm A'>{endDate}</Moment></small></div>
+                            <div className='col-md-4 text-center timeDiv'>
+                                <small>Created Date: <Moment format='YYYY-MM-DD hh:mm A'>{createdDate}</Moment></small>
+                            </div>
+                            <div className='col-md-4 text-center timeDiv'>
+                                <small>Start Date: <Moment format='YYYY-MM-DD hh:mm A'>{startDate}</Moment></small>
+                            </div>
+                            <div className='col-md-4 text-center timeDiv'>
+                                <small>End Date: <Moment format='YYYY-MM-DD hh:mm A'>{endDate}</Moment></small>
+                            </div>
                         </div>
                         <br/>
                         <p dangerouslySetInnerHTML={{__html: htmlContent}} />
@@ -45,21 +53,21 @@ class MOTD extends Component {
     render() {
 
         if (this.props.graphql.loading) {
-            return <div>Loading...</div>;
-        }
-
-        console.log(this.props);
-
-        if (this.props.graphql.data.motd.length !== 0) {
             return (
-                <div className='container-fluid'>
+                <div className='text-center react-spinner'>
+                    <ScaleLoader color='silver' loading={this.props.graphql.loading} />
+                </div>
+            );
+        } else if (this.props.graphql.data.motd.length !== 0) {
+            return (
+                <div>
                     <h2>Message of the Day</h2>
                     {this.renderMOTD()}
                 </div>
             );
         } else {
             return (
-                <div className='container-fluid'>
+                <div>
                     <h2>Message of the Day</h2>
                     <p>No message of the day.</p>
                 </div>

@@ -6,6 +6,8 @@ import { withGraphQL } from 'camelot-unchained/lib/graphql/react';
 import { accessLevelString } from 'camelot-unchained/lib/webAPI/helpers';
 import { AccessType } from 'camelot-unchained/lib/webAPI/definitions';
 
+import { ScaleLoader } from 'react-spinners';
+
 import '../../assets/css/styles.css';
 
 class ServerList extends Component {
@@ -39,25 +41,33 @@ class ServerList extends Component {
     render() {
 
         if (this.props.graphql.loading) {
-            return <div>Loading...</div>;
+            return (
+                <div className='text-center react-spinner'>
+                    <ScaleLoader color='silver' loading={this.props.graphql.loading} />
+                </div>
+            );
+        } else if (this.props.graphql.data !== null) {
+            return (
+                <div className="table-responsive">
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Server Name</th>
+                                <th>Access</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderServers()}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        } else {
+            return <div className='text-center'>Unable to load server list information from the CU API.</div>;
         }
 
-        return (
-            <div className="table-responsive">
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Server Name</th>
-                            <th>Access</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderServers()}
-                    </tbody>
-                </table>
-            </div>
-        );
+        
     }
 }
 

@@ -11,7 +11,7 @@ class Header extends Component {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="index.html">Zaedred's CU API Interface</a>
+                            <a href="index.html">Zaedred's CU Dashboard</a>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>

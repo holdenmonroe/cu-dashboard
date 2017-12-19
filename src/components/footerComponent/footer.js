@@ -6,8 +6,10 @@ import React, { Component } from 'react';
 class Footer extends Component {
     render() {
         return (
-            <div>
-
+            <div className='text-center footer'>
+                <p>
+                    <small>Built by Zaedred</small>
+                </p>
             </div>
         );
     }
