@@ -31,7 +31,8 @@ class Home extends Component {
 
         return (
             <div className="container-fluid">
-                <h3>Server List</h3>
+                <h2>Server List</h2>
+                <p><small>Click on a server to view the message of the day for that server.</small></p>
                 <ServerList className="serverList" onViewMOTD={this.handleViewMOTD} />
                 {this.state.viewMOTD ? <MOTD channelID={this.state.channelID} channelName={this.state.channelName} /> : null}
             </div>

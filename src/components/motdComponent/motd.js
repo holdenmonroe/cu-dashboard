@@ -3,6 +3,8 @@
  */
 import React, { Component } from 'react';
 import { withGraphQL } from 'camelot-unchained/lib/graphql/react';
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 import '../../assets/css/styles.css';
 
@@ -16,14 +18,25 @@ class MOTD extends Component {
 
     renderMOTD() {
         return this.props.graphql.data.motd && this.props.graphql.data.motd.map(({ id, title, htmlContent, utcCreated, utcDisplayStart, utcDisplayEnd }) => {
+
+            let createdDate = new Date(utcCreated);
+            let startDate = new Date(utcDisplayStart);
+            let endDate = new Date(utcDisplayEnd);
             
             return (
-                <div className='well' key={id}>
-                    <h3>Title:</h3> 
-                    <div className='well'><h1 dangerouslySetInnerHTML={{__html: title}} /></div>
-
-                    <h3>Message:</h3> 
-                    <div className='well'><p dangerouslySetInnerHTML={{__html: htmlContent}} /></div>
+                <div className='panel panel-default' key={id}>
+                    <div className='panel-heading'>
+                        <h3 dangerouslySetInnerHTML={{__html: title}} />
+                    </div>
+                    <div className='panel-body'>
+                        <div>
+                            <div className='col-md-4 text-center timeDiv'><small>Created Date: <Moment format='YYYY-MM-DD hh:mm A'>{createdDate}</Moment></small></div>
+                            <div className='col-md-4 text-center timeDiv'><small>Start Date: <Moment format='YYYY-MM-DD hh:mm A'>{startDate}</Moment></small></div>
+                            <div className='col-md-4 text-center timeDiv'><small>End Date: <Moment format='YYYY-MM-DD hh:mm A'>{endDate}</Moment></small></div>
+                        </div>
+                        <br/>
+                        <p dangerouslySetInnerHTML={{__html: htmlContent}} />
+                    </div>
                 </div>
             );
         });
@@ -40,13 +53,16 @@ class MOTD extends Component {
         if (this.props.graphql.data.motd.length !== 0) {
             return (
                 <div className='container-fluid'>
-                    <h3>Message of the Day</h3>
+                    <h2>Message of the Day</h2>
                     {this.renderMOTD()}
                 </div>
             );
         } else {
             return (
-                <div></div>
+                <div className='container-fluid'>
+                    <h2>Message of the Day</h2>
+                    <p>No message of the day.</p>
+                </div>
             );
         }
         
