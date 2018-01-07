@@ -14,7 +14,7 @@ class ServerList extends Component {
 
     renderServers() {
 
-        return this.props.graphql.data.serviceStatus.servers && this.props.graphql.data.serviceStatus.servers.map(({ channelID, name, status, accessLevel }) => {
+        return this.props.graphql.data.connectedServices.servers && this.props.graphql.data.connectedServices.servers.map(({ channelID, name, status, accessLevel }) => {
             
             var statusColor = "";
             if (status === "Online") {
@@ -75,7 +75,7 @@ export default withGraphQL(
     {
         query: `
         query FetchServersQuery {
-            serviceStatus {
+            connectedServices {
                 servers {
                 channelID
                 host
