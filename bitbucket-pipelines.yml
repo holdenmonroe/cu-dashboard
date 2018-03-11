@@ -3,13 +3,13 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:6.9.4
+image: dseg/node7-python2-pip-yarn-alpine35
 
 pipelines:
   default:
     - step:
-        caches:
-          - node
         script: # Modify the commands below to build your repository.
-          - npm install
-          - npm test
+          - pip install awscli
+          - yarn install
+          - yarn test-ci
+          - yarn deploy
