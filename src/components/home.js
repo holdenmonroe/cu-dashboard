@@ -18,7 +18,8 @@ class Home extends Component {
             viewPop: false,
             channelID: null,
             shardID: null,
-            channelName: null
+            channelName: null,
+            apiHost: null
         };
 
         this.scrollToInfo = React.createRef();
@@ -34,12 +35,13 @@ class Home extends Component {
         });
     }
 
-    handleViewPopulation = (loadPop, channelName, shardID) => {
+    handleViewPopulation = (loadPop, channelName, shardID, apiHost) => {
         this.setState({
             viewPop: loadPop,
             channelName: channelName,
-            shardID: shardID
-        })
+            shardID: shardID,
+            apiHost: apiHost
+        });
     }
 
     render() {
@@ -53,7 +55,7 @@ class Home extends Component {
                         <ServerList className="serverList" onViewMOTD={this.handleViewMOTD} onViewPopulation={this.handleViewPopulation} />                    
                     </div>
                     <div className="col">
-                        {this.state.viewPop ? <ServerPopulation channelName={this.state.channelName} shardID={this.state.shardID} /> : null }
+                        {this.state.viewPop ? <ServerPopulation channelName={this.state.channelName} shardID={this.state.shardID} apiHost={this.state.apiHost} /> : null }
                         {this.state.viewMOTD ? <MOTD motdRef={this.scrollToInfo} channelID={this.state.channelID} channelName={this.state.channelName} /> : null}
                     </div>
                 </div>

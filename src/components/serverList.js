@@ -22,12 +22,12 @@ class ServerList extends Component {
         this.props.onViewMOTD(true, channelID, name);
     }
 
-    handleViewPopulationChange = (name, shardID) => {
-        this.props.onViewPopulation(true, name, shardID);
+    handleViewPopulationChange = (name, shardID, apiHost) => {
+        this.props.onViewPopulation(true, name, shardID, apiHost);
     }
 
-    handleViewInfoClick(channelID, name, shardID) {
-        this.handleViewPopulationChange(name, shardID);
+    handleViewInfoClick(channelID, name, shardID, apiHost) {
+        this.handleViewPopulationChange(name, shardID, apiHost);
         this.handleViewMOTDChange(channelID, name);
     }
 
@@ -40,8 +40,7 @@ class ServerList extends Component {
 
     renderServers() {
 
-        return this.props.graphql.data.connectedServices.servers && this.props.graphql.data.connectedServices.servers.map(({ channelID, shardID, name, status, accessLevel }) => {
-            
+        return this.props.graphql.data.connectedServices.servers && this.props.graphql.data.connectedServices.servers.map(({ channelID, shardID, name, status, accessLevel, apiHost }) => {
             var statusColor = "";
             if (status === "Online") {
                 statusColor = "badge-success";
@@ -55,7 +54,7 @@ class ServerList extends Component {
                     <td>{accessLevelString(AccessType[accessLevel])}</td>
                     <td><span className={"badge " + statusColor}>{status}</span></td>
                     <td>
-                        <button type="button" className="btn btn-primary btn-shadow btn-sm btn-small" onClick={() => this.handleViewInfoClick(channelID, name, shardID)}>Info</button> 
+                        <button type="button" className="btn btn-primary btn-shadow btn-sm btn-small" onClick={() => this.handleViewInfoClick(channelID, name, shardID, apiHost)}>Info</button> 
                     </td>
                 </tr>
             );

@@ -125,5 +125,10 @@ export default withGraphQL(props =>
         server: props.channelName,
         shardID: props.shardID
       },
-    })
+    }),
+    props => (
+        {
+            url: `${props.apiHost}/graphql`
+        }
+    )
 )(ServerPopulation);
