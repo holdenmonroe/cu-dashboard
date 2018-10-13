@@ -1,11 +1,16 @@
 .green {
     font-weight: bold;
-    color: rgb(20, 100, 20);
+    color: rgb(28, 136, 28);
 }
 
 .red {
     font-weight: bold;
-    color: rgb(146, 25, 25);
+    color: rgb(194, 35, 35);
+}
+
+.blue {
+    font-weight: bold;
+    color: rgb(30, 30, 230);
 }
 
 .navbar-brand {

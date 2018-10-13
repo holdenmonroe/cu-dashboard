@@ -53,15 +53,15 @@ class ServerPopulation extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Arthurian</td>
+                            <td className="red">Arthurian</td>
                             <td>{this.props.graphql.data.metrics.currentPlayerCount.arthurian}</td>
                         </tr>
                         <tr>
-                            <td>Viking</td>
+                            <td className="blue">Viking</td>
                             <td>{this.props.graphql.data.metrics.currentPlayerCount.viking}</td>
                         </tr>
                         <tr>
-                            <td>Tuatha</td>
+                            <td className="green">Tuatha</td>
                             <td>{this.props.graphql.data.metrics.currentPlayerCount.tuatha}</td>
                         </tr>
                         <tr>
