@@ -40,7 +40,7 @@ class ServerList extends Component {
                     <td>{accessLevelString(AccessType[accessLevel])}</td>
                     <td><span className={"badge " + statusColor}>{status}</span></td>
                     <td>
-                        <button type="button" className="btn btn-primary btn-sm btn-small" onClick={() => this.handleViewInfoClick(channelID, name)}>Info</button> 
+                        <button type="button" className="btn btn-primary btn-shadow btn-sm btn-small" onClick={() => this.handleViewInfoClick(channelID, name)}>Info</button> 
                     </td>
                 </tr>
             );
