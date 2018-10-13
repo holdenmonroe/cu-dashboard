@@ -1,15 +1,11 @@
 .green {
-    color: green;
     font-weight: bold;
+    color: rgb(20, 100, 20);
 }
 
 .red {
-    color: red;
     font-weight: bold;
-}
-
-.timeDiv {
-    background-color: black;
+    color: rgb(146, 25, 25);
 }
 
 .navbar-brand {

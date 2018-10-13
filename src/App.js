@@ -4,17 +4,21 @@
 import React, { Component } from 'react';
 
 //Components
-import Header from './components/headerComponent/header';
-import Footer from './components/footerComponent/footer';
-import Home from './components/pages/home';
+import Header from './components/header';
+import Home from './components/home';
+
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import './assets/css/styles.css';
+import './assets/css/bootstrap4-neon-glow.min.css';
 
 class App extends Component {
   render() {
     return (
         <div className="App">
             <Header />
-              <Home />
-            <Footer />
+            <Home />
         </div>
     );
   }

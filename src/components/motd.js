@@ -8,14 +8,20 @@ import 'moment-timezone';
 
 import { ScaleLoader } from 'react-spinners';
 
-import '../../assets/css/styles.css';
-
 class MOTD extends Component {
 
-    componentWillReceiveProps (newProps) {
+    componentDidUpdate (newProps) {
         if (newProps.channelID !== this.props.channelID) {
             this.props.graphql.refetch();
         }
+    }
+
+    componentDidMount() {
+        this.interval = setInterval(() => this.props.graphql.refetch(), 300000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     renderMOTD() {
@@ -26,11 +32,11 @@ class MOTD extends Component {
             let endDate = new Date(utcDisplayEnd);
             
             return (
-                <div className='panel panel-default' key={id}>
-                    <div className='panel-heading'>
+                <div className='card' key={id}>
+                    <div className='card-header'>
                         <h3 dangerouslySetInnerHTML={{__html: title}} />
                     </div>
-                    <div className='panel-body'>
+                    <div className='card-body'>
                         <div>
                             <div className='col-md-4 text-center timeDiv'>
                                 <small>Created Date: <Moment format='YYYY-MM-DD hh:mm A'>{createdDate}</Moment></small>
@@ -52,23 +58,23 @@ class MOTD extends Component {
 
     render() {
 
-        if (this.props.graphql.loading) {
+        if (this.props.graphql.data === null) {
             return (
-                <div className='text-center react-spinner'>
+                <div ref={this.props.motdRef} className='text-center react-spinner'>
                     <ScaleLoader color='silver' loading={this.props.graphql.loading} />
                 </div>
             );
         } else if (this.props.graphql.data.motd.length !== 0) {
             return (
-                <div>
-                    <h2>Message of the Day</h2>
+                <div ref={this.props.motdRef}>
+                    <h2>{this.props.channelName} Message of the Day</h2>
                     {this.renderMOTD()}
                 </div>
             );
         } else {
             return (
-                <div>
-                    <h2>Message of the Day</h2>
+                <div ref={this.props.motdRef}>
+                    <h2>{this.props.channelName} Message of the Day</h2>
                     <p>No message of the day.</p>
                 </div>
             );

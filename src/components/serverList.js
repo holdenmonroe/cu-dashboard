@@ -8,9 +8,20 @@ import { AccessType } from 'camelot-unchained/lib/webAPI/definitions';
 
 import { ScaleLoader } from 'react-spinners';
 
-import '../../assets/css/styles.css';
-
 class ServerList extends Component {
+
+    handleViewMOTDChange = (channelID, name) => {
+        this.props.onViewMOTD(true, channelID, name);
+    }
+
+    handleViewPopulationChange = (name) => {
+        this.props.onViewPopulation(true, name);
+    }
+
+    handleViewInfoClick(channelID, name) {
+        this.handleViewPopulationChange(name);
+        this.handleViewMOTDChange(channelID, name);
+    }
 
     renderServers() {
 
@@ -18,29 +29,35 @@ class ServerList extends Component {
             
             var statusColor = "";
             if (status === "Online") {
-                statusColor = "green";
+                statusColor = "badge-success";
             } else {
-                statusColor = "red";
+                statusColor = "badge-danger";
             }
 
-
             return (
-                <tr key={channelID} onClick={() => this.handleViewMOTDChange(channelID, name)}>
+                <tr key={channelID}>
                     <td>{name}</td>
                     <td>{accessLevelString(AccessType[accessLevel])}</td>
-                    <td className={statusColor}>{status}</td>
+                    <td><span className={"badge " + statusColor}>{status}</span></td>
+                    <td>
+                        <button type="button" className="btn btn-primary btn-sm btn-small" onClick={() => this.handleViewInfoClick(channelID, name)}>Info</button> 
+                    </td>
                 </tr>
             );
         });
     }
 
-    handleViewMOTDChange = (channelID, name) => {
-        this.props.onViewMOTD(true, channelID, name);
+    componentDidMount() {
+        this.interval = setInterval(() => this.props.graphql.refetch(), 300000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     render() {
 
-        if (this.props.graphql.loading) {
+        if (this.props.graphql.data === null) {
             return (
                 <div className='text-center react-spinner'>
                     <ScaleLoader color='silver' loading={this.props.graphql.loading} />
@@ -55,6 +72,7 @@ class ServerList extends Component {
                                 <th>Server Name</th>
                                 <th>Access</th>
                                 <th>Status</th>
+                                <th>Options</th>
                             </tr>
                         </thead>
                         <tbody>
