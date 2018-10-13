@@ -17,6 +17,7 @@ class Home extends Component {
             viewMOTD: false,
             viewPop: false,
             channelID: null,
+            shardID: null,
             channelName: null
         };
 
@@ -33,10 +34,11 @@ class Home extends Component {
         });
     }
 
-    handleViewPopulation = (loadPop, channelName) => {
+    handleViewPopulation = (loadPop, channelName, shardID) => {
         this.setState({
             viewPop: loadPop,
-            channelName: channelName
+            channelName: channelName,
+            shardID: shardID
         })
     }
 
@@ -48,11 +50,10 @@ class Home extends Component {
                 <br/>
                 <div className="row">
                     <div className="col">
-                        <h2>Servers</h2>
                         <ServerList className="serverList" onViewMOTD={this.handleViewMOTD} onViewPopulation={this.handleViewPopulation} />                    
                     </div>
                     <div className="col">
-                        {this.state.viewPop ? <ServerPopulation channelName={this.state.channelName} /> : null }
+                        {this.state.viewPop ? <ServerPopulation channelName={this.state.channelName} shardID={this.state.shardID} /> : null }
                         {this.state.viewMOTD ? <MOTD motdRef={this.scrollToInfo} channelID={this.state.channelID} channelName={this.state.channelName} /> : null}
                     </div>
                 </div>

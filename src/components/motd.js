@@ -10,18 +10,36 @@ import { ScaleLoader } from 'react-spinners';
 
 class MOTD extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            lastUpdated: null
+        }
+    }
+
     componentDidUpdate (newProps) {
         if (newProps.channelID !== this.props.channelID) {
-            this.props.graphql.refetch();
+            this.graphqlRefetch()
         }
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.props.graphql.refetch(), 300000)
+        this.setState({
+            lastUpdated: new Date().toLocaleString()
+        });
+        this.interval = setInterval(() => this.graphqlRefetch(), 300000)
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
+    }
+
+    graphqlRefetch() {
+        this.props.graphql.refetch();
+        this.setState({
+            lastUpdated: new Date().toLocaleString()
+        });
     }
 
     renderMOTD() {
@@ -68,6 +86,7 @@ class MOTD extends Component {
             return (
                 <div ref={this.props.motdRef}>
                     <h2>{this.props.channelName} Message of the Day</h2>
+                    <p><small>Last Updated: {this.state.lastUpdated}</small></p>
                     {this.renderMOTD()}
                 </div>
             );
@@ -75,6 +94,7 @@ class MOTD extends Component {
             return (
                 <div ref={this.props.motdRef}>
                     <h2>{this.props.channelName} Message of the Day</h2>
+                    <p><small>Last Updated: {this.state.lastUpdated}</small></p>
                     <p>No message of the day.</p>
                 </div>
             );

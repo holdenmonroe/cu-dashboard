@@ -8,18 +8,36 @@ import { ScaleLoader } from 'react-spinners';
 
 class ServerPopulation extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            lastUpdated: null
+        }
+    }
+
     componentDidUpdate (newProps) {
         if (newProps.channelName !== this.props.channelName) {
-            this.props.graphql.refetch();
+            this.graphqlRefetch();
         }
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.props.graphql.refetch(), 300000)
+        this.setState({
+            lastUpdated: new Date().toLocaleString()
+        });
+        this.interval = setInterval(() => this.graphqlRefetch(), 300000);
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
+    }
+
+    graphqlRefetch() {
+        this.props.graphql.refetch();
+        this.setState({
+            lastUpdated: new Date().toLocaleString()
+        });
     }
 
     renderServerPop() {           
@@ -36,23 +54,23 @@ class ServerPopulation extends Component {
                     <tbody>
                         <tr>
                             <td>Arthurian</td>
-                            <td>{this.props.graphql.data.metrics.playerCounts[0].arthurian}</td>
+                            <td>{this.props.graphql.data.metrics.currentPlayerCount.arthurian}</td>
                         </tr>
                         <tr>
                             <td>Viking</td>
-                            <td>{this.props.graphql.data.metrics.playerCounts[0].viking}</td>
+                            <td>{this.props.graphql.data.metrics.currentPlayerCount.viking}</td>
                         </tr>
                         <tr>
                             <td>Tuatha</td>
-                            <td>{this.props.graphql.data.metrics.playerCounts[0].tuatha}</td>
+                            <td>{this.props.graphql.data.metrics.currentPlayerCount.tuatha}</td>
                         </tr>
                         <tr>
                             <td>Bots</td>
-                            <td>{this.props.graphql.data.metrics.playerCounts[0].bots}</td>
+                            <td>{this.props.graphql.data.metrics.currentPlayerCount.bots}</td>
                         </tr>
                         <tr>
                             <td>Total</td>
-                            <td>{this.props.graphql.data.metrics.playerCounts[0].total}</td>
+                            <td>{this.props.graphql.data.metrics.currentPlayerCount.total}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -72,6 +90,7 @@ class ServerPopulation extends Component {
             return (
                 <div>
                     <h2>{this.props.channelName} Population</h2>
+                    <p><small>Last Updated: {this.state.lastUpdated}</small></p>
                     {this.renderServerPop()}
                 </div>
             );
@@ -79,6 +98,7 @@ class ServerPopulation extends Component {
             return (
                 <div>
                     <h2>{this.props.channelName}</h2>
+                    <p><small>Last Updated: {this.state.lastUpdated}</small></p>
                     <p>No population data.</p>
                 </div>
             );
@@ -90,9 +110,9 @@ class ServerPopulation extends Component {
 export default withGraphQL(props => 
     ({
       query: `
-        query FetchServerPopulationQuery($server: String!) {
+        query FetchServerPopulationQuery($server: String!, $shardID: Int!) {
             metrics {
-                playerCounts(server: $server, from: "-5min", until: "now") {
+                currentPlayerCount(server: $server, shard: $shardID) {
                   total
                   bots
                   arthurian
@@ -103,6 +123,7 @@ export default withGraphQL(props =>
         }`,
       variables: {
         server: props.channelName,
+        shardID: props.shardID
       },
     })
 )(ServerPopulation);

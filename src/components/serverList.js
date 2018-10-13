@@ -10,22 +10,37 @@ import { ScaleLoader } from 'react-spinners';
 
 class ServerList extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            lastUpdated: null
+        }
+    }
+
     handleViewMOTDChange = (channelID, name) => {
         this.props.onViewMOTD(true, channelID, name);
     }
 
-    handleViewPopulationChange = (name) => {
-        this.props.onViewPopulation(true, name);
+    handleViewPopulationChange = (name, shardID) => {
+        this.props.onViewPopulation(true, name, shardID);
     }
 
-    handleViewInfoClick(channelID, name) {
-        this.handleViewPopulationChange(name);
+    handleViewInfoClick(channelID, name, shardID) {
+        this.handleViewPopulationChange(name, shardID);
         this.handleViewMOTDChange(channelID, name);
+    }
+
+    graphqlRefetch() {
+        this.props.graphql.refetch();
+        this.setState({
+            lastUpdated: new Date().toLocaleString()
+        });
     }
 
     renderServers() {
 
-        return this.props.graphql.data.connectedServices.servers && this.props.graphql.data.connectedServices.servers.map(({ channelID, name, status, accessLevel }) => {
+        return this.props.graphql.data.connectedServices.servers && this.props.graphql.data.connectedServices.servers.map(({ channelID, shardID, name, status, accessLevel }) => {
             
             var statusColor = "";
             if (status === "Online") {
@@ -40,7 +55,7 @@ class ServerList extends Component {
                     <td>{accessLevelString(AccessType[accessLevel])}</td>
                     <td><span className={"badge " + statusColor}>{status}</span></td>
                     <td>
-                        <button type="button" className="btn btn-primary btn-shadow btn-sm btn-small" onClick={() => this.handleViewInfoClick(channelID, name)}>Info</button> 
+                        <button type="button" className="btn btn-primary btn-shadow btn-sm btn-small" onClick={() => this.handleViewInfoClick(channelID, name, shardID)}>Info</button> 
                     </td>
                 </tr>
             );
@@ -48,7 +63,10 @@ class ServerList extends Component {
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.props.graphql.refetch(), 300000)
+        this.setState({
+            lastUpdated: new Date().toLocaleString()
+        });
+        this.interval = setInterval(() => this.graphqlRefetch(), 300000)
     }
 
     componentWillUnmount() {
@@ -59,30 +77,47 @@ class ServerList extends Component {
 
         if (this.props.graphql.data === null) {
             return (
-                <div className='text-center react-spinner'>
-                    <ScaleLoader color='silver' loading={this.props.graphql.loading} />
+                <div>
+                    <h2>Servers</h2>
+                    <div className='text-center react-spinner'>
+                        <ScaleLoader color='silver' loading={this.props.graphql.loading} />
+                    </div>
                 </div>
+                
             );
         } else if (this.props.graphql.data !== null) {
             return (
-                <div className="table-responsive">
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Server Name</th>
-                                <th>Access</th>
-                                <th>Status</th>
-                                <th>Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.renderServers()}
-                        </tbody>
-                    </table>
+                <div>
+                    <h2>Servers</h2>
+                    <p><small>Last Updated: {this.state.lastUpdated}</small></p>
+                    <div className="table-responsive">
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Server Name</th>
+                                    <th>Access</th>
+                                    <th>Status</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.renderServers()}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                
             );
         } else {
-            return <div className='text-center'>Unable to load server list information from the CU API.</div>;
+            return (
+                <div>
+                    <h2>Servers</h2>
+                    <div className='text-center'>
+                        <span>Unable to load server list information from the CU API.</span>
+                    </div>
+                </div>
+                
+            );
         }
 
         
@@ -96,6 +131,7 @@ export default withGraphQL(
             connectedServices {
                 servers {
                 channelID
+                shardID
                 host
                 name
                 status
