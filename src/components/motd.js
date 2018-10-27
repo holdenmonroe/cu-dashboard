@@ -82,7 +82,7 @@ class MOTD extends Component {
                     <ScaleLoader color='silver' loading={this.props.graphql.loading} />
                 </div>
             );
-        } else if (this.props.graphql.data.motd.length !== 0) {
+        } else if (this.props.graphql.data.motd) {
             return (
                 <div ref={this.props.motdRef}>
                     <h2>{this.props.channelName} Message of the Day</h2>
