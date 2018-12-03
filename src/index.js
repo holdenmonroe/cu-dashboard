@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { useConfig } from 'camelot-unchained/lib/graphql/react';
 
 import App from './App';
-//import '../src/env.js';
+import registerServiceWorker from './registerServiceWorker';
 
 useConfig({
     url: 'https://hatcheryapi.camelotunchained.com/graphql'
@@ -11,3 +11,5 @@ useConfig({
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
+
+registerServiceWorker();
