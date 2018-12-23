@@ -3,8 +3,8 @@
   "name": "Camelot Unchained Dashboard by Zaedred",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "192x192",
+      "src": "assets/cu_logo_game.png",
+      "sizes": "144x144",
       "type": "image/png"
     }
   ],
