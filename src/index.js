@@ -6,7 +6,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 useConfig({
-    url: 'https://hatcheryapi.camelotunchained.com/graphql'
+    url: 'https://hatcheryapi.camelotunchained.com'
 })
 
 
