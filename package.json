@@ -11,7 +11,7 @@
     "camelot-unchained": "http://registry.camelotunchained.com/camelot-unchained/-/camelot-unchained-0.9.34.tgz",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.10.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "popper.js": "^1.14.4",
